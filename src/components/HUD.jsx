@@ -24,6 +24,11 @@ const HUD = ({
             <span className="hud-value">{formatScore(score)}</span>
           </div>
           
+          <div className="hud-item">
+            <span className="hud-label">TIME</span>
+            <span className="hud-value">{gameState.time || '12:00'}</span>
+          </div>
+          
           <div className="hud-item hud-level">
             <span className="hud-label">LEVEL</span>
             <span className="hud-value">{level}</span>

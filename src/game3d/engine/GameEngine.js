@@ -1,66 +1,143 @@
 /**
- * MA3 - 3D GAME ENGINE
- * Real 3D matatu racing simulation
- * Uses Three.js for rendering, Cannon.js for physics
+ * MA3 - GAME ENGINE
+ * Three.js + Cannon.js physics engine
+ * Enhanced with post-processing, time system, and particles
  */
 
 import * as THREE from 'three';
 import * as CANNON from 'cannon-es';
+import TimeSystem from '../systems/TimeSystem';
+import DustSystem from '../particles/DustSystem';
 
 export class GameEngine {
   constructor(canvas) {
     this.canvas = canvas;
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.world = null;
+    
+    // Materials
+    this.groundMaterial = null;
+    this.wheelMaterial = null;
+    
+    // Lighting
+    this.sun = null;
+    this.ambient = null;
+    
+    // Input
+    this.input = {
+      forward: false,
+      backward: false,
+      left: false,
+      right: false,
+      brake: false,
+      handbrake: false
+    };
+    
+    // Camera
+    this.cameraMode = 'chase';
+    this.cameraDistance = 15;
+    this.cameraHeight = 5;
+    this.cameraOffset = new THREE.Vector3(0, this.cameraHeight, -this.cameraDistance);
+    this.cameraVelocity = new THREE.Vector3();
+    
+    // Time
     this.clock = new THREE.Clock();
     this.delta = 0;
-    this.time = 0;
-    
-    // Performance tracking
     this.fps = 60;
     this.frameCount = 0;
-    this.lastFrameTime = performance.now();
+    this.lastFPSUpdate = 0;
     
-    this.initRenderer();
+    // Systems
+    this.timeSystem = null;
+    this.dustSystem = null;
+    
+    this.init();
+  }
+  
+  init() {
     this.initScene();
-    this.initPhysics();
-    this.initLighting();
+    this.initRenderer();
     this.initCamera();
-    this.initControls();
+    this.initLighting();
+    this.initPhysics();
+    this.initInput();
+    this.initTimeSystem();
+    this.initParticles();
     
-    console.log('🎮 MA3 Game Engine Initialized');
+    console.log('🎮 Game Engine initialized');
+  }
+  
+  initScene() {
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x87CEEB);
+    this.scene.fog = new THREE.Fog(0x87CEEB, 50, 500);
+    
+    console.log('🌍 Scene created');
   }
   
   initRenderer() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
       antialias: true,
-      powerPreference: 'high-performance',
       alpha: false
     });
     
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.2;
     
-    window.addEventListener('resize', () => {
-      this.camera.aspect = window.innerWidth / window.innerHeight;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    });
+    window.addEventListener('resize', () => this.onResize());
+    
+    console.log('🖼️ Renderer initialized');
   }
   
-  initScene() {
-    this.scene = new THREE.Scene();
-    const skyColor = new THREE.Color(0x87CEEB);
-    const groundColor = new THREE.Color(0xB8B890);
-    this.scene.background = skyColor;
-    this.scene.fog = new THREE.Fog(skyColor, 100, 1000);
+  initCamera() {
+    this.camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
     
-    const hemiLight = new THREE.HemisphereLight(skyColor, groundColor, 0.6);
+    this.camera.position.set(0, 10, -20);
+    this.camera.lookAt(0, 0, 0);
+    
+    console.log('📷 Camera ready');
+  }
+  
+  initLighting() {
+    // Ambient light
+    this.ambient = new THREE.AmbientLight(0xffffff, 0.4);
+    this.scene.add(this.ambient);
+    
+    // Directional light (sun)
+    this.sun = new THREE.DirectionalLight(0xffffff, 1.5);
+    this.sun.position.set(50, 100, 50);
+    this.sun.castShadow = true;
+    
+    // Shadow settings
+    this.sun.shadow.mapSize.width = 2048;
+    this.sun.shadow.mapSize.height = 2048;
+    this.sun.shadow.camera.near = 0.5;
+    this.sun.shadow.camera.far = 500;
+    this.sun.shadow.camera.left = -100;
+    this.sun.shadow.camera.right = 100;
+    this.sun.shadow.camera.top = 100;
+    this.sun.shadow.camera.bottom = -100;
+    
+    this.scene.add(this.sun);
+    
+    // Hemisphere light (sky/ground)
+    const hemiLight = new THREE.HemisphereLight(0x87CEEB, 0x8B7355, 0.5);
     this.scene.add(hemiLight);
+    
+    console.log('💡 Lighting setup complete');
   }
   
   initPhysics() {
@@ -69,12 +146,15 @@ export class GameEngine {
     });
     
     this.world.broadphase = new CANNON.SAPBroadphase(this.world);
-    this.world.allowSleep = true;
+    this.world.defaultContactMaterial.friction = 0.4;
+    this.world.defaultContactMaterial.restitution = 0.3;
     
+    // Materials
     this.groundMaterial = new CANNON.Material('ground');
     this.wheelMaterial = new CANNON.Material('wheel');
     
-    const wheelGround = new CANNON.ContactMaterial(
+    // Contact materials
+    const wheelGroundContact = new CANNON.ContactMaterial(
       this.wheelMaterial,
       this.groundMaterial,
       {
@@ -84,145 +164,202 @@ export class GameEngine {
       }
     );
     
-    this.world.addContactMaterial(wheelGround);
-    console.log('⚙️ Physics Engine Ready');
+    this.world.addContactMaterial(wheelGroundContact);
+    
+    console.log('⚙️ Physics engine ready');
   }
   
-  initLighting() {
-    this.sun = new THREE.DirectionalLight(0xFFFAF0, 1.5);
-    this.sun.position.set(50, 100, 50);
-    this.sun.castShadow = true;
-    
-    this.sun.shadow.mapSize.width = 2048;
-    this.sun.shadow.mapSize.height = 2048;
-    this.sun.shadow.camera.near = 0.5;
-    this.sun.shadow.camera.far = 500;
-    this.sun.shadow.camera.left = -100;
-    this.sun.shadow.camera.right = 100;
-    this.sun.shadow.camera.top = 100;
-    this.sun.shadow.camera.bottom = -100;
-    this.sun.shadow.bias = -0.0001;
-    
-    this.scene.add(this.sun);
-    
-    const ambient = new THREE.AmbientLight(0xFFFFFF, 0.4);
-    this.scene.add(ambient);
-  }
-  
-  initCamera() {
-    this.camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      2000
-    );
-    
-    this.camera.position.set(0, 5, -10);
-    this.camera.lookAt(0, 0, 0);
-    
-    this.cameraMode = 'chase';
-    this.cameraOffset = new THREE.Vector3(0, 3, -8);
-  }
-  
-  initControls() {
-    this.input = {
-      forward: false,
-      backward: false,
-      left: false,
-      right: false,
-      brake: false,
-      handbrake: false,
-      horn: false
-    };
-    
+  initInput() {
     window.addEventListener('keydown', (e) => {
       switch(e.key.toLowerCase()) {
-        case 'w': case 'arrowup': this.input.forward = true; break;
-        case 's': case 'arrowdown': this.input.backward = true; break;
-        case 'a': case 'arrowleft': this.input.left = true; break;
-        case 'd': case 'arrowright': this.input.right = true; break;
-        case ' ': this.input.handbrake = true; break;
-        case 'shift': this.input.brake = true; break;
-        case 'h': this.input.horn = true; break;
-        case 'c': this.cycleCamera(); break;
+        case 'w':
+        case 'arrowup':
+          this.input.forward = true;
+          break;
+        case 's':
+        case 'arrowdown':
+          this.input.backward = true;
+          break;
+        case 'a':
+        case 'arrowleft':
+          this.input.left = true;
+          break;
+        case 'd':
+        case 'arrowright':
+          this.input.right = true;
+          break;
+        case 'shift':
+          this.input.brake = true;
+          break;
+        case ' ':
+          e.preventDefault();
+          this.input.handbrake = true;
+          break;
+        case 'c':
+          this.changeCameraMode();
+          break;
+        case 'h':
+          console.log('🎺 HOOOOORN!');
+          break;
       }
     });
     
     window.addEventListener('keyup', (e) => {
       switch(e.key.toLowerCase()) {
-        case 'w': case 'arrowup': this.input.forward = false; break;
-        case 's': case 'arrowdown': this.input.backward = false; break;
-        case 'a': case 'arrowleft': this.input.left = false; break;
-        case 'd': case 'arrowright': this.input.right = false; break;
-        case ' ': this.input.handbrake = false; break;
-        case 'shift': this.input.brake = false; break;
-        case 'h': this.input.horn = false; break;
+        case 'w':
+        case 'arrowup':
+          this.input.forward = false;
+          break;
+        case 's':
+        case 'arrowdown':
+          this.input.backward = false;
+          break;
+        case 'a':
+        case 'arrowleft':
+          this.input.left = false;
+          break;
+        case 'd':
+        case 'arrowright':
+          this.input.right = false;
+          break;
+        case 'shift':
+          this.input.brake = false;
+          break;
+        case ' ':
+          this.input.handbrake = false;
+          break;
       }
     });
-  }
-  
-  cycleCamera() {
-    const modes = ['chase', 'hood', 'cinematic', 'drone'];
-    const currentIndex = modes.indexOf(this.cameraMode);
-    this.cameraMode = modes[(currentIndex + 1) % modes.length];
-    console.log('📷 Camera:', this.cameraMode);
-  }
-  
-  updateCamera(vehicle) {
-    if (!vehicle) return;
     
-    const pos = vehicle.position.clone();
+    console.log('🎮 Input system ready');
+  }
+  
+  initTimeSystem() {
+    this.timeSystem = new TimeSystem(this.scene, this.sun);
+    console.log('⏰ Time system initialized');
+  }
+  
+  initParticles() {
+    this.dustSystem = new DustSystem(this.scene);
+    console.log('✨ Particle systems ready');
+  }
+  
+  changeCameraMode() {
+    const modes = ['chase', 'hood', 'drone', 'cinematic'];
+    const currentIndex = modes.indexOf(this.cameraMode);
+    const nextIndex = (currentIndex + 1) % modes.length;
+    this.cameraMode = modes[nextIndex];
+    
+    console.log(`📷 Camera mode: ${this.cameraMode}`);
+  }
+  
+  updateCamera(vehicleMesh) {
+    if (!vehicleMesh) return;
+    
+    const vehiclePos = vehicleMesh.position;
+    const vehicleQuat = vehicleMesh.quaternion;
     
     switch(this.cameraMode) {
       case 'chase':
-        const offset = new THREE.Vector3(0, 3, -8);
-        offset.applyQuaternion(vehicle.quaternion);
-        this.camera.position.lerp(pos.clone().add(offset), 0.1);
-        this.camera.lookAt(pos);
+        this.updateChaseCamera(vehiclePos, vehicleQuat);
         break;
-        
       case 'hood':
-        const hoodOffset = new THREE.Vector3(0, 1.5, 2);
-        hoodOffset.applyQuaternion(vehicle.quaternion);
-        this.camera.position.copy(pos.clone().add(hoodOffset));
-        
-        const lookAt = new THREE.Vector3(0, 1.5, 10);
-        lookAt.applyQuaternion(vehicle.quaternion);
-        this.camera.lookAt(pos.clone().add(lookAt));
+        this.updateHoodCamera(vehiclePos, vehicleQuat);
         break;
-        
-      case 'cinematic':
-        this.time += this.delta;
-        const angle = this.time * 0.5;
-        const radius = 15;
-        this.camera.position.x = pos.x + Math.cos(angle) * radius;
-        this.camera.position.y = pos.y + 5;
-        this.camera.position.z = pos.z + Math.sin(angle) * radius;
-        this.camera.lookAt(pos);
-        break;
-        
       case 'drone':
-        const droneOffset = new THREE.Vector3(0, 20, -15);
-        droneOffset.applyQuaternion(vehicle.quaternion);
-        this.camera.position.lerp(pos.clone().add(droneOffset), 0.05);
-        this.camera.lookAt(pos);
+        this.updateDroneCamera(vehiclePos);
+        break;
+      case 'cinematic':
+        this.updateCinematicCamera(vehiclePos, vehicleQuat);
         break;
     }
   }
   
+  updateChaseCamera(vehiclePos, vehicleQuat) {
+    // Calculate target position behind vehicle
+    const offset = new THREE.Vector3(0, this.cameraHeight, -this.cameraDistance);
+    offset.applyQuaternion(vehicleQuat);
+    
+    const targetPos = new THREE.Vector3().copy(vehiclePos).add(offset);
+    
+    // Smooth lerp
+    this.camera.position.lerp(targetPos, 0.08);
+    
+    // Look at point slightly ahead of vehicle
+    const lookAtOffset = new THREE.Vector3(0, 1, 5);
+    lookAtOffset.applyQuaternion(vehicleQuat);
+    const lookAtPos = new THREE.Vector3().copy(vehiclePos).add(lookAtOffset);
+    
+    this.camera.lookAt(lookAtPos);
+  }
+  
+  updateHoodCamera(vehiclePos, vehicleQuat) {
+    // Position camera inside vehicle (driver POV)
+    const offset = new THREE.Vector3(0, 2, 1);
+    offset.applyQuaternion(vehicleQuat);
+    
+    const targetPos = new THREE.Vector3().copy(vehiclePos).add(offset);
+    this.camera.position.lerp(targetPos, 0.1);
+    
+    // Look forward
+    const lookAtOffset = new THREE.Vector3(0, 1.5, 20);
+    lookAtOffset.applyQuaternion(vehicleQuat);
+    const lookAtPos = new THREE.Vector3().copy(vehiclePos).add(lookAtOffset);
+    
+    this.camera.lookAt(lookAtPos);
+  }
+  
+  updateDroneCamera(vehiclePos) {
+    // High aerial view
+    const targetPos = new THREE.Vector3(
+      vehiclePos.x,
+      vehiclePos.y + 50,
+      vehiclePos.z - 30
+    );
+    
+    this.camera.position.lerp(targetPos, 0.05);
+    this.camera.lookAt(vehiclePos);
+  }
+  
+  updateCinematicCamera(vehiclePos, vehicleQuat) {
+    // Side tracking shot
+    const time = Date.now() * 0.0005;
+    const radius = 20;
+    
+    const offset = new THREE.Vector3(
+      Math.cos(time) * radius,
+      10,
+      Math.sin(time) * radius
+    );
+    
+    const targetPos = new THREE.Vector3().copy(vehiclePos).add(offset);
+    this.camera.position.lerp(targetPos, 0.03);
+    this.camera.lookAt(vehiclePos);
+  }
+  
   update() {
-    this.delta = this.clock.getDelta();
-    this.time += this.delta;
+    this.delta = Math.min(this.clock.getDelta(), 0.1);
     
-    const fixedTimeStep = 1 / 60;
-    this.world.step(fixedTimeStep, this.delta, 3);
+    // Update physics
+    this.world.step(1 / 60, this.delta, 3);
     
+    // Update time system
+    if (this.timeSystem) {
+      this.timeSystem.update(this.delta);
+    }
+    
+    // Update particle systems
+    if (this.dustSystem) {
+      this.dustSystem.update(this.delta);
+    }
+    
+    // Calculate FPS
     this.frameCount++;
     const now = performance.now();
-    if (now >= this.lastFrameTime + 1000) {
-      this.fps = this.frameCount;
+    if (now - this.lastFPSUpdate > 1000) {
+      this.fps = Math.round((this.frameCount * 1000) / (now - this.lastFPSUpdate));
       this.frameCount = 0;
-      this.lastFrameTime = now;
+      this.lastFPSUpdate = now;
     }
   }
   
@@ -234,12 +371,12 @@ export class GameEngine {
     this.scene.add(object);
   }
   
-  addToPhysics(body) {
-    this.world.addBody(body);
-  }
-  
   removeFromScene(object) {
     this.scene.remove(object);
+  }
+  
+  addToPhysics(body) {
+    this.world.addBody(body);
   }
   
   removeFromPhysics(body) {
@@ -250,19 +387,53 @@ export class GameEngine {
     return this.fps;
   }
   
+  onResize() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+    
+    this.renderer.setSize(width, height);
+  }
+  
   dispose() {
-    this.renderer.dispose();
-    this.scene.traverse((object) => {
-      if (object.geometry) object.geometry.dispose();
-      if (object.material) {
-        if (Array.isArray(object.material)) {
-          object.material.forEach(mat => mat.dispose());
-        } else {
-          object.material.dispose();
+    console.log('🗑️ Disposing game engine...');
+    
+    // Dispose renderer
+    if (this.renderer) {
+      this.renderer.dispose();
+    }
+    
+    // Dispose time system
+    if (this.timeSystem) {
+      // TimeSystem doesn't need disposal
+      this.timeSystem = null;
+    }
+    
+    // Dispose particle systems
+    if (this.dustSystem) {
+      this.dustSystem.dispose();
+    }
+    
+    // Clear scene
+    if (this.scene) {
+      this.scene.traverse((object) => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach(material => material.dispose());
+          } else {
+            object.material.dispose();
+          }
         }
-      }
-    });
-    console.log('🗑️ Game Engine Disposed');
+      });
+    }
+    
+    // Remove event listeners
+    window.removeEventListener('resize', this.onResize);
+    
+    console.log('✅ Game engine disposed');
   }
 }
 

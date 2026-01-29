@@ -61,7 +61,8 @@ text
     │   ├── styles
     │   │   └── Game3D.css
     │   └── systems
-    │       └── ConductorSystem.js
+    │       ├── ConductorSystem.js
+    │       └── TimeSystem.js
     ├── hooks
     │   ├── useGameLoop.js
     │   ├── useKeyboard.js
@@ -84,6 +85,6 @@ text
         ├── policeSystem.js
         └── trafficRules.js
 
-23 directories, 60 files
+23 directories, 61 files
 
 <!-- TREE_END -->
