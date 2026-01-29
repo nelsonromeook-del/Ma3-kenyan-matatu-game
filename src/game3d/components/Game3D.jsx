@@ -51,6 +51,10 @@ const Game3D = ({ selectedMatatu, onExit }) => {
       console.log('✅ All systems initialized');
       
       startGameLoop();
+      console.log('🔍 Engine:', engineRef.current);
+      console.log('🔍 Vehicle:', vehicleRef.current);
+      console.log('🔍 World:', worldRef.current);
+      console.log('🔍 Scene children:', engineRef.current?.scene.children.length);
       
       // Hide controls after 5 seconds
       const controlsTimer = setTimeout(() => {
