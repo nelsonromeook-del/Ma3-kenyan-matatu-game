@@ -1,7 +1,7 @@
 /**
  * MA3 - REALISTIC VEHICLE PHYSICS
  * Based on real car physics principles
- * Includes: suspension, tire grip, weight transfer, drifting
+ * Includes: suspension, tire grip, weight transfer, drifting, LED underglow, dust particles
  */
 
 import * as THREE from 'three';
@@ -33,6 +33,10 @@ export class VehiclePhysics {
     this.gear = 1;
     this.steeringAngle = 0;
     this.isDrifting = false;
+    
+    // Underglow
+    this.underglowLight = null;
+    this.underglowMesh = null;
     
     this.init();
   }
@@ -285,13 +289,13 @@ export class VehiclePhysics {
   
   addUnderglow() {
     const glowColor = new THREE.Color(this.matatuData.visual.primaryColor);
-  
+    
     // Main underglow light
     const underglow = new THREE.PointLight(glowColor, 3, 8);
     underglow.position.y = -0.5;
     this.mesh.add(underglow);
     this.underglowLight = underglow;
-  
+    
     // Add glow mesh for visual effect
     const glowGeometry = new THREE.PlaneGeometry(this.wheelTrack * 1.2, this.wheelBase * 2);
     const glowMaterial = new THREE.MeshBasicMaterial({
@@ -301,7 +305,7 @@ export class VehiclePhysics {
       side: THREE.DoubleSide,
       blending: THREE.AdditiveBlending
     });
-  
+    
     const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
     glowMesh.rotation.x = -Math.PI / 2;
     glowMesh.position.y = -0.4;
@@ -391,24 +395,36 @@ export class VehiclePhysics {
       this.chassisBody.velocity.scale(factor, this.chassisBody.velocity);
     }
     
+    // Emit dust when drifting or braking hard
+    if (this.isDrifting || (input.brake && this.speed > 30)) {
+      const dustAmount = Math.min(Math.floor(this.speed / 10), 15);
+      if (this.engine.dustSystem) {
+        this.engine.dustSystem.emit(
+          this.mesh.position.clone(),
+          this.chassisBody.velocity,
+          dustAmount
+        );
+      }
+    }
+    
     this.updateVisuals();
     
-    // Enhanced underglow animation (replaces old version)
+    // Enhanced underglow animation
     if (this.underglowLight) {
       const time = Date.now() * 0.003;
       const pulse = Math.sin(time) * 0.5 + 0.5; // 0 to 1
-  
+      
       // Pulse with speed
       const speedFactor = Math.min(this.speed / 100, 1);
       this.underglowLight.intensity = 2 + pulse * 2 + speedFactor;
-  
+      
       // Pulse the glow mesh too
       if (this.underglowMesh) {
         this.underglowMesh.material.opacity = 0.3 + pulse * 0.3;
       }
-    }  
-
+    }
   }
+  
   updateVisuals() {
     this.mesh.position.copy(this.chassisBody.position);
     this.mesh.quaternion.copy(this.chassisBody.quaternion);
@@ -455,7 +471,7 @@ export class VehiclePhysics {
     this.rpm = 800;
   }
   
-    dispose() {
+  dispose() {
     try {
       // Remove physics body
       if (this.chassisBody && this.engine && this.engine.world) {
@@ -478,4 +494,5 @@ export class VehiclePhysics {
     }
   }
 }
+
 export default VehiclePhysics;
