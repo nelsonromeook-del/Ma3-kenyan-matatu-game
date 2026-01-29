@@ -33,7 +33,6 @@ const Game3D = ({ selectedMatatu, onExit }) => {
   
   const [isPaused, setIsPaused] = useState(false);
   const [showControls, setShowControls] = useState(true);
-  const [cameraMode, setCameraMode] = useState('chase');
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -42,14 +41,18 @@ const Game3D = ({ selectedMatatu, onExit }) => {
     console.log('Selected Matatu:', selectedMatatu);
     
     try {
+      // Initialize systems
       engineRef.current = new GameEngine(canvasRef.current);
       worldRef.current = new NairobiWorld(engineRef.current);
       vehicleRef.current = new VehiclePhysics(engineRef.current, selectedMatatu);
       conductorRef.current = new ConductorSystem();
       policeRef.current = new PoliceSystem();
       
+      console.log('✅ All systems initialized');
+      
       startGameLoop();
       
+      // Hide controls after 5 seconds
       const controlsTimer = setTimeout(() => {
         setShowControls(false);
       }, 5000);
@@ -83,8 +86,13 @@ const Game3D = ({ selectedMatatu, onExit }) => {
       const engine = engineRef.current;
       const vehicle = vehicleRef.current;
       
+      // Update engine (physics, time, particles)
       engine.update();
+      
+      // Update vehicle
       vehicle.update(engine.input, engine.delta);
+      
+      // Update camera
       engine.updateCamera(vehicle.mesh);
       
       // Update conductor system
@@ -98,6 +106,7 @@ const Game3D = ({ selectedMatatu, onExit }) => {
         policeRef.current.update(vehicle.getSpeed());
       }
       
+      // Update game state for HUD
       setGameState(prev => ({
         ...prev,
         speed: Math.round(vehicle.getSpeed()),
@@ -107,6 +116,7 @@ const Game3D = ({ selectedMatatu, onExit }) => {
         time: engine.timeSystem ? engine.timeSystem.getTimeOfDay() : '12:00'
       }));
       
+      // Render scene
       engine.render();
       
       animationFrameRef.current = requestAnimationFrame(gameLoop);
@@ -134,6 +144,12 @@ const Game3D = ({ selectedMatatu, onExit }) => {
     if (vehicleRef.current && worldRef.current) {
       const spawnPos = worldRef.current.getSpawnPosition();
       vehicleRef.current.reset(spawnPos);
+      setGameState(prev => ({
+        ...prev,
+        speed: 0,
+        rpm: 800,
+        gear: 1
+      }));
     }
   };
 
@@ -183,9 +199,11 @@ const Game3D = ({ selectedMatatu, onExit }) => {
             <span className="gear-label">GEAR</span>
             <span className="gear-value">{gameState.gear}</span>
           </div>
-          <div className="drift-indicator" style={{ opacity: gameState.speed > 30 ? 1 : 0 }}>
-            <span>🔥 DRIFT MODE</span>
-          </div>
+          {vehicleRef.current?.isDrifting && (
+            <div className="drift-indicator">
+              <span>🔥 DRIFT MODE</span>
+            </div>
+          )}
         </div>
         
         {/* Bottom Right - Minimap */}
@@ -206,7 +224,7 @@ const Game3D = ({ selectedMatatu, onExit }) => {
           {gameState.fps} FPS
         </div>
         
-        {/* Controls Guide */}
+        {/* Controls Guide (shows for 5 seconds) */}
         {showControls && (
           <div className="controls-guide">
             <h3>🎮 CONTROLS</h3>
@@ -248,6 +266,7 @@ const Game3D = ({ selectedMatatu, onExit }) => {
                 <span className="control-desc">Pause</span>
               </div>
             </div>
+            <p className="controls-hint">Controls will hide in {Math.ceil((5000 - Date.now()) / 1000)}s...</p>
           </div>
         )}
         
@@ -256,7 +275,7 @@ const Game3D = ({ selectedMatatu, onExit }) => {
           <div className="pause-overlay">
             <div className="pause-menu">
               <h2>⏸️ GAME PAUSED</h2>
-              <p className="pause-subtitle">Tumesimama stage</p>
+              <p className="pause-subtitle">Tumesimama stage kidogo</p>
               <div className="pause-buttons">
                 <button className="btn btn-primary" onClick={handlePause}>
                   ▶️ RESUME
@@ -280,6 +299,10 @@ const Game3D = ({ selectedMatatu, onExit }) => {
                 <div className="stat">
                   <span>Earnings:</span>
                   <strong>KES {gameState.money}</strong>
+                </div>
+                <div className="stat">
+                  <span>Time:</span>
+                  <strong>{gameState.time}</strong>
                 </div>
               </div>
             </div>
