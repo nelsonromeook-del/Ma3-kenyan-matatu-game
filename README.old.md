@@ -3,20 +3,31 @@ text
 .
 ├── README.md
 ├── README.old.md
+├── design
+│   ├── design-system.html
+│   └── figma-design.json
 ├── package-lock.json
 ├── package.json
+├── project-management
+│   ├── BACKLOG.md
+│   ├── issues.json
+│   └── jira-import.csv
 ├── public
 │   ├── assets
 │   │   ├── backgrounds
 │   │   ├── roads
 │   │   ├── ui
 │   │   └── vehicles
+│   ├── design-system.html
 │   ├── favicon.ico
 │   ├── index.html
 │   ├── logo192.png
 │   ├── logo512.png
 │   ├── manifest.json
 │   └── robots.txt
+├── scripts
+│   ├── generate-figma-designs.js
+│   └── generate-jira-issues.js
 └── src
     ├── App.css
     ├── App.js
@@ -28,6 +39,8 @@ text
     │   ├── HUD.jsx
     │   ├── IntroVideo.css
     │   ├── IntroVideo.jsx
+    │   ├── LoadingScreen.css
+    │   ├── LoadingScreen.jsx
     │   ├── MatatuSelect.css
     │   ├── MatatuSelect.jsx
     │   ├── RadioPlayer.css
@@ -88,6 +101,6 @@ text
         ├── policeSystem.js
         └── trafficRules.js
 
-24 directories, 63 files
+27 directories, 73 files
 
 <!-- TREE_END -->
