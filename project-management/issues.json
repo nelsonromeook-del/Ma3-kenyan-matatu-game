@@ -1,0 +1,168 @@
+[
+  {
+    "issueType": "Epic",
+    "summary": "Visual Excellence",
+    "description": "Make MA3 the most beautiful driving game. Better graphics than Slow Roads.",
+    "priority": "High",
+    "labels": "graphics,polish",
+    "epicName": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Replace placeholder matatu with real 3D model",
+    "description": "Find/create realistic matatu 3D model (GLTF format)\n    \nAcceptance Criteria:\n- [ ] Find or create realistic matatu 3D model\n- [ ] Apply real paint textures\n- [ ] Add LED underglow with proper glow\n- [ ] Wheels rotate realistically\n- [ ] Shadows work correctly",
+    "storyPoints": 8,
+    "priority": "High",
+    "labels": "graphics,3d-model",
+    "epicLink": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Add post-processing effects",
+    "description": "Add cinema-quality visual effects\n    \nAcceptance Criteria:\n- [ ] Bloom effect (glowing lights)\n- [ ] SSAO (ambient occlusion)\n- [ ] Motion blur when speeding\n- [ ] Color grading (cinematic look)\n- [ ] Depth of field (background blur)",
+    "storyPoints": 5,
+    "priority": "High",
+    "labels": "graphics,post-processing",
+    "epicLink": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Create realistic Nairobi buildings",
+    "description": "Replace box buildings with detailed models\n    \nAcceptance Criteria:\n- [ ] Replace box buildings with detailed models\n- [ ] Add windows, signs, balconies\n- [ ] Kenyan architectural style\n- [ ] LOD system (far buildings = simple)\n- [ ] Real Nairobi landmarks (KICC, Hilton, etc)",
+    "storyPoints": 13,
+    "priority": "Medium",
+    "labels": "graphics,world-building",
+    "epicLink": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Procedural road system",
+    "description": "Create dynamic, realistic roads\n    \nAcceptance Criteria:\n- [ ] Roads curve naturally (not just straight)\n- [ ] Potholes (Nairobi authenticity!)\n- [ ] Speed bumps\n- [ ] Roundabouts\n- [ ] Different road types (tarmac, murram)",
+    "storyPoints": 8,
+    "priority": "Medium",
+    "labels": "graphics,world-building",
+    "epicLink": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Optimize to 60 FPS",
+    "description": "Performance optimization\n    \nAcceptance Criteria:\n- [ ] Maintain 60 FPS on mid-range PCs\n- [ ] Frustum culling (don't render off-screen)\n- [ ] Object pooling for particles\n- [ ] Texture compression\n- [ ] Performance profiling",
+    "storyPoints": 8,
+    "priority": "High",
+    "labels": "performance,optimization",
+    "epicLink": "VISUAL-EXCELLENCE"
+  },
+  {
+    "issueType": "Epic",
+    "summary": "Core Gameplay",
+    "description": "Build addictive matatu simulator mechanics. Passengers, routes, economy, progression.",
+    "priority": "High",
+    "labels": "gameplay,mechanics",
+    "epicName": "CORE-GAMEPLAY"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Passenger boarding system",
+    "description": "Real matatu passenger mechanics\n    \nAcceptance Criteria:\n- [ ] Passengers spawn at matatu stages\n- [ ] 3D passenger models\n- [ ] Board when you stop (press E)\n- [ ] Pay fare (KES 50-100 depending on route)\n- [ ] Get angry if you skip their stage\n- [ ] Authentic Kenyan passenger behavior",
+    "storyPoints": 13,
+    "priority": "High",
+    "labels": "gameplay,passengers",
+    "epicLink": "CORE-GAMEPLAY"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Route system",
+    "description": "Real Nairobi routes\n    \nAcceptance Criteria:\n- [ ] Real Nairobi routes (46, 33, 23, 111, etc)\n- [ ] Stage markers on map\n- [ ] Route deviation penalties\n- [ ] Conductor announces next stage\n- [ ] Mini-missions per route",
+    "storyPoints": 8,
+    "priority": "High",
+    "labels": "gameplay,routes",
+    "epicLink": "CORE-GAMEPLAY"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Economy system",
+    "description": "Money management\n    \nAcceptance Criteria:\n- [ ] Earn KES from passengers\n- [ ] Pay fuel costs\n- [ ] Pay conductor salary\n- [ ] Police bribes\n- [ ] Daily expenses\n- [ ] Bank account/savings",
+    "storyPoints": 8,
+    "priority": "Medium",
+    "labels": "gameplay,economy",
+    "epicLink": "CORE-GAMEPLAY"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Matatu upgrades",
+    "description": "Customize your nganya\n    \nAcceptance Criteria:\n- [ ] Paint jobs (KES 5,000)\n- [ ] Sound systems (KES 15,000)\n- [ ] Engine upgrades (KES 25,000)\n- [ ] LED lights (KES 3,000)\n- [ ] Better seats (comfort = more passengers)\n- [ ] Graffiti/custom art",
+    "storyPoints": 13,
+    "priority": "Medium",
+    "labels": "gameplay,upgrades",
+    "epicLink": "CORE-GAMEPLAY"
+  },
+  {
+    "issueType": "Epic",
+    "summary": "Living Nairobi",
+    "description": "Make Nairobi feel alive. Traffic, weather, NPCs, events.",
+    "priority": "Medium",
+    "labels": "world,ai",
+    "epicName": "LIVING-WORLD"
+  },
+  {
+    "issueType": "Story",
+    "summary": "AI Traffic system",
+    "description": "Realistic Nairobi traffic\n    \nAcceptance Criteria:\n- [ ] Other matatus on road (AI-driven)\n- [ ] Boda bodas weaving through traffic\n- [ ] Private cars\n- [ ] Pedestrians crossing randomly\n- [ ] Traffic jams (realistic Nairobi!)\n- [ ] Rush hour mechanics",
+    "storyPoints": 13,
+    "priority": "Medium",
+    "labels": "world,ai,traffic",
+    "epicLink": "LIVING-WORLD"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Weather system",
+    "description": "Dynamic weather\n    \nAcceptance Criteria:\n- [ ] Rainy season (April/November)\n- [ ] Flooded roads\n- [ ] Dust storms\n- [ ] Sunny days\n- [ ] Weather affects handling\n- [ ] Rain on windshield effect",
+    "storyPoints": 8,
+    "priority": "Low",
+    "labels": "world,weather",
+    "epicLink": "LIVING-WORLD"
+  },
+  {
+    "issueType": "Epic",
+    "summary": "Audio Experience",
+    "description": "Authentic Kenyan matatu sound. Music, voices, city noise.",
+    "priority": "Medium",
+    "labels": "audio,sound",
+    "epicName": "AUDIO-EXPERIENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Gengetone music system",
+    "description": "Real Kenyan music\n    \nAcceptance Criteria:\n- [ ] 20+ Gengetone tracks\n- [ ] Radio stations (Homeboyz, Kiss, etc)\n- [ ] Volume control in-game\n- [ ] Bass boost when upgraded sound system\n- [ ] Music reacts to driving",
+    "storyPoints": 5,
+    "priority": "High",
+    "labels": "audio,music",
+    "epicLink": "AUDIO-EXPERIENCE"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Engine sounds",
+    "description": "Realistic vehicle audio\n    \nAcceptance Criteria:\n- [ ] Realistic engine audio\n- [ ] Rev sounds change with RPM\n- [ ] Turbo whistle (for upgraded matatus)\n- [ ] Gear shift sounds\n- [ ] Brake squeal",
+    "storyPoints": 5,
+    "priority": "Medium",
+    "labels": "audio,sfx",
+    "epicLink": "AUDIO-EXPERIENCE"
+  },
+  {
+    "issueType": "Epic",
+    "summary": "Launch Ready",
+    "description": "Final polish, deployment, marketing.",
+    "priority": "High",
+    "labels": "launch,deployment",
+    "epicName": "LAUNCH"
+  },
+  {
+    "issueType": "Story",
+    "summary": "Deploy to Vercel",
+    "description": "Production deployment\n    \nAcceptance Criteria:\n- [ ] Build optimized for production\n- [ ] Deploy to Vercel\n- [ ] Custom domain setup\n- [ ] Analytics integration\n- [ ] Error logging",
+    "storyPoints": 3,
+    "priority": "High",
+    "labels": "deployment,devops",
+    "epicLink": "LAUNCH"
+  }
+]

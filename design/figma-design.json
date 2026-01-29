@@ -1,0 +1,759 @@
+{
+  "name": "MA3 - Kenyan Matatu Game",
+  "version": "1.0.0",
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "01 - Screens",
+      "frames": [
+        {
+          "id": "frame-main-menu",
+          "name": "Main Menu",
+          "type": "FRAME",
+          "width": 1920,
+          "height": 1080,
+          "backgroundColor": {
+            "r": 0.06,
+            "g": 0.13,
+            "b": 0.15,
+            "a": 1
+          },
+          "children": [
+            {
+              "id": "logo-text",
+              "name": "MA3 Logo",
+              "type": "TEXT",
+              "x": 810,
+              "y": 200,
+              "width": 300,
+              "height": 120,
+              "text": "MA3",
+              "fontSize": 96,
+              "fontFamily": "Poppins",
+              "fontWeight": 700,
+              "fill": {
+                "r": 1,
+                "g": 0.84,
+                "b": 0,
+                "a": 1
+              },
+              "effects": [
+                {
+                  "type": "DROP_SHADOW",
+                  "color": {
+                    "r": 1,
+                    "g": 0.84,
+                    "b": 0,
+                    "a": 0.8
+                  },
+                  "offset": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "radius": 40,
+                  "visible": true
+                },
+                {
+                  "type": "DROP_SHADOW",
+                  "color": {
+                    "r": 1,
+                    "g": 0.84,
+                    "b": 0,
+                    "a": 0.6
+                  },
+                  "offset": {
+                    "x": 0,
+                    "y": 0
+                  },
+                  "radius": 80,
+                  "visible": true
+                }
+              ]
+            },
+            {
+              "id": "subtitle",
+              "name": "Subtitle",
+              "type": "TEXT",
+              "x": 710,
+              "y": 340,
+              "width": 500,
+              "height": 40,
+              "text": "KENYAN MATATU EXPERIENCE",
+              "fontSize": 24,
+              "fontFamily": "Poppins",
+              "fontWeight": 400,
+              "letterSpacing": 4,
+              "fill": {
+                "r": 1,
+                "g": 1,
+                "b": 1,
+                "a": 0.8
+              }
+            },
+            {
+              "id": "btn-start",
+              "name": "Start Button",
+              "type": "RECTANGLE",
+              "x": 810,
+              "y": 500,
+              "width": 300,
+              "height": 80,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 1,
+                "g": 0.84,
+                "b": 0,
+                "a": 1
+              },
+              "effects": [
+                {
+                  "type": "DROP_SHADOW",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.5
+                  },
+                  "offset": {
+                    "x": 0,
+                    "y": 8
+                  },
+                  "radius": 20,
+                  "visible": true
+                }
+              ],
+              "children": [
+                {
+                  "id": "btn-start-text",
+                  "name": "Button Text",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 25,
+                  "width": 300,
+                  "height": 30,
+                  "text": "▶ START GAME",
+                  "fontSize": 20,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 700,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "frame-game-hud",
+          "name": "Game HUD",
+          "type": "FRAME",
+          "width": 1920,
+          "height": 1080,
+          "backgroundColor": {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0
+          },
+          "children": [
+            {
+              "id": "speedometer",
+              "name": "Speedometer",
+              "type": "RECTANGLE",
+              "x": 40,
+              "y": 800,
+              "width": 250,
+              "height": 240,
+              "cornerRadius": 20,
+              "fill": {
+                "r": 0.12,
+                "g": 0.12,
+                "b": 0.12,
+                "a": 0.9
+              },
+              "stroke": {
+                "r": 1,
+                "g": 0.84,
+                "b": 0,
+                "a": 0.5
+              },
+              "strokeWeight": 2
+            },
+            {
+              "id": "time-display",
+              "name": "Time Display",
+              "type": "RECTANGLE",
+              "x": 1630,
+              "y": 100,
+              "width": 250,
+              "height": 80,
+              "cornerRadius": 15,
+              "fill": {
+                "r": 0.12,
+                "g": 0.12,
+                "b": 0.12,
+                "a": 0.9
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "page-2",
+      "name": "02 - Components",
+      "frames": []
+    },
+    {
+      "id": "page-3",
+      "name": "03 - Style Guide",
+      "frames": [
+        {
+          "id": "frame-colors",
+          "name": "Color Palette",
+          "type": "FRAME",
+          "width": 1200,
+          "height": 800,
+          "children": [
+            {
+              "id": "color-0",
+              "name": "Matatu Gold",
+              "type": "RECTANGLE",
+              "x": 50,
+              "y": 50,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 1,
+                "g": 0.8431372549019608,
+                "b": 0,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-0",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Matatu Gold",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-0",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#FFD700",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-1",
+              "name": "Nairobi Black",
+              "type": "RECTANGLE",
+              "x": 250,
+              "y": 50,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 0.10196078431372549,
+                "g": 0.10196078431372549,
+                "b": 0.10196078431372549,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-1",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Nairobi Black",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-1",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#1A1A1A",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-2",
+              "name": "Kenya Green",
+              "type": "RECTANGLE",
+              "x": 450,
+              "y": 50,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 0,
+                "g": 0.4196078431372549,
+                "b": 0.24705882352941178,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-2",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Kenya Green",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-2",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#006B3F",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-3",
+              "name": "Kenya Red",
+              "type": "RECTANGLE",
+              "x": 650,
+              "y": 50,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 0.7843137254901961,
+                "g": 0.06274509803921569,
+                "b": 0.1803921568627451,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-3",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Kenya Red",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-3",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#C8102E",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-4",
+              "name": "Electric Blue",
+              "type": "RECTANGLE",
+              "x": 50,
+              "y": 250,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 0,
+                "g": 0.8313725490196079,
+                "b": 1,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-4",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Electric Blue",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-4",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#00D4FF",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-5",
+              "name": "Neon Pink",
+              "type": "RECTANGLE",
+              "x": 250,
+              "y": 250,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 1,
+                "g": 0.06274509803921569,
+                "b": 0.9411764705882353,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-5",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Neon Pink",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-5",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#FF10F0",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-6",
+              "name": "Warning Yellow",
+              "type": "RECTANGLE",
+              "x": 450,
+              "y": 250,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 1,
+                "g": 0.7803921568627451,
+                "b": 0,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-6",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Warning Yellow",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-6",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#FFC700",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            },
+            {
+              "id": "color-7",
+              "name": "Success Green",
+              "type": "RECTANGLE",
+              "x": 650,
+              "y": 250,
+              "width": 150,
+              "height": 150,
+              "cornerRadius": 12,
+              "fill": {
+                "r": 0,
+                "g": 1,
+                "b": 0.5333333333333333,
+                "a": 1
+              },
+              "children": [
+                {
+                  "id": "color-label-7",
+                  "name": "Label",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 160,
+                  "width": 150,
+                  "height": 30,
+                  "text": "Success Green",
+                  "fontSize": 14,
+                  "fontFamily": "Poppins",
+                  "fontWeight": 600,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 1
+                  }
+                },
+                {
+                  "id": "color-hex-7",
+                  "name": "Hex",
+                  "type": "TEXT",
+                  "x": 0,
+                  "y": 190,
+                  "width": 150,
+                  "height": 20,
+                  "text": "#00FF88",
+                  "fontSize": 12,
+                  "fontFamily": "JetBrains Mono",
+                  "fontWeight": 400,
+                  "textAlign": "center",
+                  "fill": {
+                    "r": 1,
+                    "g": 1,
+                    "b": 1,
+                    "a": 0.7
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "styles": {
+    "colors": {
+      "matatu-gold": {
+        "r": 1,
+        "g": 0.84,
+        "b": 0,
+        "a": 1
+      },
+      "nairobi-black": {
+        "r": 0.1,
+        "g": 0.1,
+        "b": 0.1,
+        "a": 1
+      },
+      "kenya-green": {
+        "r": 0,
+        "g": 0.42,
+        "b": 0.25,
+        "a": 1
+      },
+      "kenya-red": {
+        "r": 0.78,
+        "g": 0.06,
+        "b": 0.18,
+        "a": 1
+      },
+      "electric-blue": {
+        "r": 0,
+        "g": 0.83,
+        "b": 1,
+        "a": 1
+      },
+      "neon-pink": {
+        "r": 1,
+        "g": 0.06,
+        "b": 0.94,
+        "a": 1
+      }
+    },
+    "textStyles": {
+      "h1-hero": {
+        "fontSize": 96,
+        "fontFamily": "Poppins",
+        "fontWeight": 700,
+        "letterSpacing": 10
+      },
+      "h2-section": {
+        "fontSize": 64,
+        "fontFamily": "Poppins",
+        "fontWeight": 700
+      },
+      "h3-card": {
+        "fontSize": 32,
+        "fontFamily": "Poppins",
+        "fontWeight": 600
+      },
+      "body-large": {
+        "fontSize": 20,
+        "fontFamily": "Poppins",
+        "fontWeight": 400
+      },
+      "body-regular": {
+        "fontSize": 16,
+        "fontFamily": "Poppins",
+        "fontWeight": 400
+      }
+    }
+  }
+}

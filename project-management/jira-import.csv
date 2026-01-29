@@ -1,0 +1,123 @@
+Issue Type,Summary,Description,Story Points,Priority,Labels,Epic Link,Epic Name
+Epic,Visual Excellence,"Make MA3 the most beautiful driving game. Better graphics than Slow Roads.",,High,graphics,polish,,VISUAL-EXCELLENCE
+Story,Replace placeholder matatu with real 3D model,"Find/create realistic matatu 3D model (GLTF format)
+    
+Acceptance Criteria:
+- [ ] Find or create realistic matatu 3D model
+- [ ] Apply real paint textures
+- [ ] Add LED underglow with proper glow
+- [ ] Wheels rotate realistically
+- [ ] Shadows work correctly",8,High,graphics,3d-model,VISUAL-EXCELLENCE,
+Story,Add post-processing effects,"Add cinema-quality visual effects
+    
+Acceptance Criteria:
+- [ ] Bloom effect (glowing lights)
+- [ ] SSAO (ambient occlusion)
+- [ ] Motion blur when speeding
+- [ ] Color grading (cinematic look)
+- [ ] Depth of field (background blur)",5,High,graphics,post-processing,VISUAL-EXCELLENCE,
+Story,Create realistic Nairobi buildings,"Replace box buildings with detailed models
+    
+Acceptance Criteria:
+- [ ] Replace box buildings with detailed models
+- [ ] Add windows, signs, balconies
+- [ ] Kenyan architectural style
+- [ ] LOD system (far buildings = simple)
+- [ ] Real Nairobi landmarks (KICC, Hilton, etc)",13,Medium,graphics,world-building,VISUAL-EXCELLENCE,
+Story,Procedural road system,"Create dynamic, realistic roads
+    
+Acceptance Criteria:
+- [ ] Roads curve naturally (not just straight)
+- [ ] Potholes (Nairobi authenticity!)
+- [ ] Speed bumps
+- [ ] Roundabouts
+- [ ] Different road types (tarmac, murram)",8,Medium,graphics,world-building,VISUAL-EXCELLENCE,
+Story,Optimize to 60 FPS,"Performance optimization
+    
+Acceptance Criteria:
+- [ ] Maintain 60 FPS on mid-range PCs
+- [ ] Frustum culling (don't render off-screen)
+- [ ] Object pooling for particles
+- [ ] Texture compression
+- [ ] Performance profiling",8,High,performance,optimization,VISUAL-EXCELLENCE,
+Epic,Core Gameplay,"Build addictive matatu simulator mechanics. Passengers, routes, economy, progression.",,High,gameplay,mechanics,,CORE-GAMEPLAY
+Story,Passenger boarding system,"Real matatu passenger mechanics
+    
+Acceptance Criteria:
+- [ ] Passengers spawn at matatu stages
+- [ ] 3D passenger models
+- [ ] Board when you stop (press E)
+- [ ] Pay fare (KES 50-100 depending on route)
+- [ ] Get angry if you skip their stage
+- [ ] Authentic Kenyan passenger behavior",13,High,gameplay,passengers,CORE-GAMEPLAY,
+Story,Route system,"Real Nairobi routes
+    
+Acceptance Criteria:
+- [ ] Real Nairobi routes (46, 33, 23, 111, etc)
+- [ ] Stage markers on map
+- [ ] Route deviation penalties
+- [ ] Conductor announces next stage
+- [ ] Mini-missions per route",8,High,gameplay,routes,CORE-GAMEPLAY,
+Story,Economy system,"Money management
+    
+Acceptance Criteria:
+- [ ] Earn KES from passengers
+- [ ] Pay fuel costs
+- [ ] Pay conductor salary
+- [ ] Police bribes
+- [ ] Daily expenses
+- [ ] Bank account/savings",8,Medium,gameplay,economy,CORE-GAMEPLAY,
+Story,Matatu upgrades,"Customize your nganya
+    
+Acceptance Criteria:
+- [ ] Paint jobs (KES 5,000)
+- [ ] Sound systems (KES 15,000)
+- [ ] Engine upgrades (KES 25,000)
+- [ ] LED lights (KES 3,000)
+- [ ] Better seats (comfort = more passengers)
+- [ ] Graffiti/custom art",13,Medium,gameplay,upgrades,CORE-GAMEPLAY,
+Epic,Living Nairobi,"Make Nairobi feel alive. Traffic, weather, NPCs, events.",,Medium,world,ai,,LIVING-WORLD
+Story,AI Traffic system,"Realistic Nairobi traffic
+    
+Acceptance Criteria:
+- [ ] Other matatus on road (AI-driven)
+- [ ] Boda bodas weaving through traffic
+- [ ] Private cars
+- [ ] Pedestrians crossing randomly
+- [ ] Traffic jams (realistic Nairobi!)
+- [ ] Rush hour mechanics",13,Medium,world,ai,traffic,LIVING-WORLD,
+Story,Weather system,"Dynamic weather
+    
+Acceptance Criteria:
+- [ ] Rainy season (April/November)
+- [ ] Flooded roads
+- [ ] Dust storms
+- [ ] Sunny days
+- [ ] Weather affects handling
+- [ ] Rain on windshield effect",8,Low,world,weather,LIVING-WORLD,
+Epic,Audio Experience,"Authentic Kenyan matatu sound. Music, voices, city noise.",,Medium,audio,sound,,AUDIO-EXPERIENCE
+Story,Gengetone music system,"Real Kenyan music
+    
+Acceptance Criteria:
+- [ ] 20+ Gengetone tracks
+- [ ] Radio stations (Homeboyz, Kiss, etc)
+- [ ] Volume control in-game
+- [ ] Bass boost when upgraded sound system
+- [ ] Music reacts to driving",5,High,audio,music,AUDIO-EXPERIENCE,
+Story,Engine sounds,"Realistic vehicle audio
+    
+Acceptance Criteria:
+- [ ] Realistic engine audio
+- [ ] Rev sounds change with RPM
+- [ ] Turbo whistle (for upgraded matatus)
+- [ ] Gear shift sounds
+- [ ] Brake squeal",5,Medium,audio,sfx,AUDIO-EXPERIENCE,
+Epic,Launch Ready,"Final polish, deployment, marketing.",,High,launch,deployment,,LAUNCH
+Story,Deploy to Vercel,"Production deployment
+    
+Acceptance Criteria:
+- [ ] Build optimized for production
+- [ ] Deploy to Vercel
+- [ ] Custom domain setup
+- [ ] Analytics integration
+- [ ] Error logging",3,High,deployment,devops,LAUNCH,
