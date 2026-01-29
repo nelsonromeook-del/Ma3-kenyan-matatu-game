@@ -285,10 +285,28 @@ export class VehiclePhysics {
   
   addUnderglow() {
     const glowColor = new THREE.Color(this.matatuData.visual.primaryColor);
-    const underglow = new THREE.PointLight(glowColor, 2, 5);
+  
+    // Main underglow light
+    const underglow = new THREE.PointLight(glowColor, 3, 8);
     underglow.position.y = -0.5;
     this.mesh.add(underglow);
     this.underglowLight = underglow;
+  
+    // Add glow mesh for visual effect
+    const glowGeometry = new THREE.PlaneGeometry(this.wheelTrack * 1.2, this.wheelBase * 2);
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: glowColor,
+      transparent: true,
+      opacity: 0.4,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending
+    });
+  
+    const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+    glowMesh.rotation.x = -Math.PI / 2;
+    glowMesh.position.y = -0.4;
+    this.mesh.add(glowMesh);
+    this.underglowMesh = glowMesh;
   }
   
   addRouteNumber() {
@@ -375,11 +393,22 @@ export class VehiclePhysics {
     
     this.updateVisuals();
     
+    // Enhanced underglow animation (replaces old version)
     if (this.underglowLight) {
-      this.underglowLight.intensity = 2 + Math.sin(Date.now() * 0.003) * 0.5;
-    }
-  }
+      const time = Date.now() * 0.003;
+      const pulse = Math.sin(time) * 0.5 + 0.5; // 0 to 1
   
+      // Pulse with speed
+      const speedFactor = Math.min(this.speed / 100, 1);
+      this.underglowLight.intensity = 2 + pulse * 2 + speedFactor;
+  
+      // Pulse the glow mesh too
+      if (this.underglowMesh) {
+        this.underglowMesh.material.opacity = 0.3 + pulse * 0.3;
+      }
+    }  
+
+  }
   updateVisuals() {
     this.mesh.position.copy(this.chassisBody.position);
     this.mesh.quaternion.copy(this.chassisBody.quaternion);
